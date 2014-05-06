@@ -34,7 +34,16 @@ var handleRequest = function(request, response) {
     response.write(JSON.stringify(db));
   } else if (request.method == 'POST'){
     request.on('data', function(data){
-      console.log(JSON.parse(data));
+      var newEntry = {
+        createdAt: new Date().toISOString(),
+        objectId: "teDOY3Rnpe",
+        roomname: JSON.parse(data).roomname,
+        text: JSON.parse(data).text,
+        updatedAt: new Date().toISOString(),
+        username: JSON.parse(data).username
+      };
+      console.log(newEntry);
+      db.push(newEntry);
     });
   }
 
