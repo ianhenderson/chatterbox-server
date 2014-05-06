@@ -4,7 +4,43 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-var db = require("./database.js");
+// var db = require('./database.js');
+// var db;
+var fs = require('fs');
+var lazy = require('lazy');
+var path = require('path');
+var filepath = path.join(__dirname + '/database.js');
+var db = [];
+new lazy(fs.createReadStream(filepath), {encoding: 'utf8'})
+        .lines
+        .forEach(function(line){
+          // console.log(line.toString());
+          // db.push(JSON.parse(line.toString()));
+          var test = line.toString()
+          db.push(JSON.parse(test));
+          console.log(db);
+        });
+// console.log(db);
+
+// fs.readFile(filepath, 'utf8', function(err,data){
+//   if (err){
+//     return console.log(err);
+//   }
+//   db = data;
+// });
+
+// var writeout = 'HelloDOODZ';
+// fs.appendFile(filepath, writeout, function(err){
+//   if (err){
+//     return console.log(err);
+//   }
+//   console.log(writeout);
+// });
+
+
+
+
+
 var handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -31,8 +67,9 @@ var handleRequest = function(request, response) {
    * up in the browser.*/
 
   if (request.method === 'GET'){
+    console.log(JSON.stringify(db));
     response.write(JSON.stringify(db));
-  } else if (request.method == 'POST'){
+  } else if (request.method === 'POST') {
     request.on('data', function(data){
       var newEntry = {
         createdAt: new Date().toISOString(),
