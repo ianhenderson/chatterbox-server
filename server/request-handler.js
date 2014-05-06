@@ -13,7 +13,7 @@ var handleRequest = function(request, response) {
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
   console.log("Serving request type " + request.method + " for url " + request.url);
-
+  // console.log(request);
   var statusCode = 200;
 
   /* Without this line, this server wouldn't work. See the note
@@ -30,16 +30,18 @@ var handleRequest = function(request, response) {
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
 
-   var reply = "Hello, world!";
-   if (request.method === 'GET'){
-      response.write(JSON.stringify(db);
-      // console.log(db);
-   }
+  if (request.method === 'GET'){
+    response.write(JSON.stringify(db));
+  } else if (request.method == 'POST'){
+    request.on('data', function(data){
+      console.log(JSON.parse(data));
+    });
+  }
 
 
 
 
-  response.end("Hello, world!");
+  response.end();
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -51,7 +53,8 @@ var defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
-  "access-control-max-age": 10 // Seconds.
+  "access-control-max-age": 10, // Seconds.
+  "Content-Type": "application/json"
 };
 
 
